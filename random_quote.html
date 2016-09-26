@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title>Random Quote Machine</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  </head>
+  
+  <body>
+    <h1>Random Quote:</h1>
+    <p id="quote">  </p>
+    <p id="author">  </p>
+    <button id="getQuote"> New Quote </button>
+  </body>
+
+  <script>
+  $(document).ready(function() {
+       $.ajaxSetup({ cache: false });
+       
+       function getNewQuote() {
+          var quoteAPI = "https://crossorigin.me/http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en"
+          $.getJSON(quoteAPI, function(json) {
+               $("#quote").html(json.quoteText);
+               $("#author").html(json.quoteAuthor);
+          });
+       }
+       getNewQuote();
+       
+       $("#getQuote").on( "click", getNewQuote() );
+  });
+  </script>
+</html>
