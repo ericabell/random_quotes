@@ -13,6 +13,8 @@
   </body>
 
   <script>
+  var currentQuote = '';
+
   function getNewQuote(event) {
       if(event) {console.log(`getNewQuote event: ${event.type}`);}
       else {console.log(`Loading first quote`);}
@@ -21,11 +23,11 @@
      $.getJSON(quoteAPI, function(json) {
           $("#quote").html(json.quoteText);
           $("#author").html(json.quoteAuthor);
+          currentQuote = json.quoteText;
      });
-     return json.quoteText;
   }
 
-  function tweetQuote(currentQuote) {
+  function tweetQuote(event) {
     console.log(`tweetQuote event: ${event.type}`);
     var url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(currentQuote);
     window.open(url, 'Share', 'width=550, height=400, toolbar=0, scrollbars=1 ,location=0 ,statusbar=0,menubar=0, resizable=0');
@@ -41,7 +43,7 @@
        currentQuote = getNewQuote();
 
        // call tweetQuote to let the user tweet this quote
-       $("#tweetQuote").on( "click", tweetQuote(currentQuote) );
+       $("#tweetQuote").on( "click", tweetQuote );
   });
   </script>
 </html>
