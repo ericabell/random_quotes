@@ -41,9 +41,9 @@
        function getNewQuote() {
           var quoteAPI = "http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en"
           $.ajax({
-                url: quoteAPI,
-                jsonp: "callback",
-                dataType: "jsonp"
+                    url: quoteAPI,
+                    jsonp: "callback",
+                    dataType: "jsonp"
                  },
               success: function(response) {
                 console.log(response);
