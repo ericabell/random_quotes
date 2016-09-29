@@ -8,11 +8,34 @@
     <h1>Random Quote:</h1>
     <p id="quote">  </p>
     <p id="author">  </p>
+    <button id="tweetQuote"> Tweet It! </button>
     <button id="getQuote"> New Quote </button>
   </body>
 
   <script>
+  var currentQuote = '';
+
+  function getNewQuote(event) {
+      if(event) {console.log(`getNewQuote event: ${event.type}`);}
+      else {console.log(`Loading first quote`);}
+     // using crossorigin.me
+     var quoteAPI = "https://crossorigin.me/http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en"
+     $.getJSON(quoteAPI, function(json) {
+          $("#quote").html(json.quoteText);
+          $("#author").html(json.quoteAuthor);
+          currentQuote = json.quoteText;
+     });
+  }
+
+  function tweetQuote(event) {
+    console.log(`tweetQuote event: ${event.type}`);
+    var url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(currentQuote);
+    window.open(url, 'Share', 'width=550, height=400, toolbar=0, scrollbars=1 ,location=0 ,statusbar=0,menubar=0, resizable=0');
+  }
+
   $(document).ready(function() {
+      var currentQuote = "";
+       // so that we don't cache requests and can get a new quote anytime...
        $.ajaxSetup({ cache: false });
        
        function getNewQuote() {
@@ -30,6 +53,14 @@
        getNewQuote();
        
        $("#getQuote").on( "click", getNewQuote() );
+
+       // attach the handler function -- be sure NOT to use getNewQuote()
+       $("#getQuote").on( "click", getNewQuote );
+       // call getNewQuote once to get a new quote when the page loads
+       currentQuote = getNewQuote();
+
+       // call tweetQuote to let the user tweet this quote
+       $("#tweetQuote").on( "click", tweetQuote );
   });
   </script>
 </html>
